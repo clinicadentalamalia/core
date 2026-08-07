@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import "@fontsource-variable/cormorant-garamond";
+import "@fontsource-variable/inter";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], variable: "--font-cormorant", display: "swap" });
 
 export const metadata: Metadata = {
   title: { default: "Clínica Amalia", template: "%s · Clínica Amalia" },
@@ -12,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="es" className={`${inter.variable} ${cormorant.variable}`}><body>{children}</body></html>;
+  return <html lang="es"><body>{children}</body></html>;
 }

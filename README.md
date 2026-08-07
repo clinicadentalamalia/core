@@ -16,7 +16,8 @@ Aplicación privada en Next.js para diseño y pruebas de la futura operación od
 - Tailwind CSS 4 y tokens visuales globales.
 - Supabase SSR preparado para navegador y servidor.
 - React Hook Form y Zod para validación.
-- Vitest y Testing Library.
+- Pruebas básicas con el ejecutor nativo de Node.js.
+- Inter y Cormorant Garamond alojadas como dependencias locales para builds reproducibles.
 
 ## Ejecución local
 
@@ -35,6 +36,10 @@ pnpm typecheck
 pnpm test
 pnpm build
 ```
+
+El script `build` vuelve a ejecutar `typecheck` antes de compilar. Next.js omite su
+comprobación interna duplicada para mantener el proceso compatible con entornos
+restringidos que no permiten crear subprocesos durante la compilación.
 
 ## Variables
 

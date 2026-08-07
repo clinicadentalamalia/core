@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  --font-inter: "Inter Variable", Inter, system-ui, sans-serif;
+  --font-cormorant: "Cormorant Garamond Variable", Georgia, serif;
   --amalia-primary: #704464;
   --amalia-primary-dark: #58364f;
   --amalia-secondary: #95758d;
