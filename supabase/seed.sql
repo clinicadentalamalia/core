@@ -1,0 +1,2 @@
+-- Intencionalmente vacío: esta entrega no crea ni persiste datos clínicos.
+-- Agregar únicamente datos sintéticos después de aprobar el esquema y sus políticas RLS.

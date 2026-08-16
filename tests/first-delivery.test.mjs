@@ -8,6 +8,7 @@ test("los datos están rotulados como ficticios y usan dominios de prueba", asyn
   const source = await read("src/lib/demo-data.ts");
   assert.match(source, /Todos los nombres y datos son ficticios/);
   assert.doesNotMatch(source, /@(gmail|hotmail|outlook)\./i);
+  assert.doesNotMatch(source, /RUT ficticio|\d{1,2}\.\d{3}\.\d{3}-[\dk]/i);
   assert.ok((source.match(/@example\.test/g) ?? []).length >= 4);
 });
 
