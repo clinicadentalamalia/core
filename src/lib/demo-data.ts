@@ -3,10 +3,10 @@ import type { DemoAppointment, DemoPatient, Role } from "@/types/demo";
 export const DEMO_NOTICE = "Entorno demostrativo · Todos los nombres y datos son ficticios";
 
 export const demoPatients: DemoPatient[] = [
-  { id: "pac-demo-001", initials: "VP", name: "Valentina Prado", identifier: "RUT ficticio 11.111.111-1", phone: "+56 9 1111 1111", email: "valentina@example.test", lastVisit: "04 ago 2026", nextAppointment: "Hoy, 10:30", status: "Activo", alert: "Alergia ficticia: látex" },
-  { id: "pac-demo-002", initials: "MR", name: "Martina Rojas", identifier: "RUT ficticio 22.222.222-2", phone: "+56 9 2222 2222", email: "martina@example.test", lastVisit: "31 jul 2026", nextAppointment: "12 ago, 09:00", status: "Seguimiento" },
-  { id: "pac-demo-003", initials: "SC", name: "Sofía Contreras", identifier: "RUT ficticio 33.333.333-3", phone: "+56 9 3333 3333", email: "sofia@example.test", lastVisit: "28 jul 2026", nextAppointment: "Sin agendar", status: "Activo" },
-  { id: "pac-demo-004", initials: "CB", name: "Camila Bustos", identifier: "RUT ficticio 44.444.444-4", phone: "+56 9 4444 4444", email: "camila@example.test", lastVisit: "18 jul 2026", nextAppointment: "15 ago, 16:00", status: "Inactivo" },
+  { id: "pac-demo-001", initials: "VP", name: "Valentina Prado", identifier: "ID-DEMO-001", phone: "+56 9 1111 1111", email: "valentina@example.test", lastVisit: "04 ago 2026", nextAppointment: "Hoy, 10:30", status: "Activo", alert: "Alergia ficticia: látex" },
+  { id: "pac-demo-002", initials: "MR", name: "Martina Rojas", identifier: "ID-DEMO-002", phone: "+56 9 2222 2222", email: "martina@example.test", lastVisit: "31 jul 2026", nextAppointment: "12 ago, 09:00", status: "Seguimiento" },
+  { id: "pac-demo-003", initials: "SC", name: "Sofía Contreras", identifier: "ID-DEMO-003", phone: "+56 9 3333 3333", email: "sofia@example.test", lastVisit: "28 jul 2026", nextAppointment: "Sin agendar", status: "Activo" },
+  { id: "pac-demo-004", initials: "CB", name: "Camila Bustos", identifier: "ID-DEMO-004", phone: "+56 9 4444 4444", email: "camila@example.test", lastVisit: "18 jul 2026", nextAppointment: "15 ago, 16:00", status: "Inactivo" },
 ];
 
 export const demoAppointments: DemoAppointment[] = [
