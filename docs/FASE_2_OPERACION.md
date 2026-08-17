@@ -64,8 +64,10 @@ en esta fase para impedir autoelevación de privilegios.
 - Definir en Vercel `NEXT_PUBLIC_SUPABASE_URL` y
   `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. El código acepta temporalmente la
   antigua `NEXT_PUBLIC_SUPABASE_ANON_KEY` para no romper el despliegue actual.
-- Mantener Vercel Authentication hasta completar MFA, recuperación de cuenta,
-  separación desarrollo/producción y autorización para datos reales.
+- Mantener Vercel Authentication mientras el proyecto sea una demostración.
+  MFA quedó excluido del alcance actual por decisión de producto; recuperación
+  de cuenta, respaldo probado y separación desarrollo/producción deben
+  reevaluarse antes de autorizar datos reales.
 - Ejecutar `pnpm check` y `supabase/tests/phase_2_rls.sql` antes de promover.
 
 ## Verificación y rollback
