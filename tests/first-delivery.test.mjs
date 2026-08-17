@@ -4,12 +4,32 @@ import test from "node:test";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("los datos están rotulados como ficticios y usan dominios de prueba", async () => {
+test("el entorno advierte que no se deben ingresar datos reales", async () => {
   const source = await read("src/lib/demo-data.ts");
-  assert.match(source, /Todos los nombres y datos son ficticios/);
+  assert.match(source, /No ingresar datos reales/);
   assert.doesNotMatch(source, /@(gmail|hotmail|outlook)\./i);
   assert.doesNotMatch(source, /RUT ficticio|\d{1,2}\.\d{3}\.\d{3}-[\dk]/i);
   assert.ok((source.match(/@example\.test/g) ?? []).length >= 4);
+});
+
+test("la sesión se refresca en el proxy y las rutas privadas validan claims", async () => {
+  const proxy = await read("src/lib/supabase/proxy.ts");
+  const layout = await read("src/app/(private)/layout.tsx");
+  assert.match(proxy, /auth\.getClaims\(\)/);
+  assert.match(proxy, /Cache-Control/);
+  assert.match(layout, /auth\.getClaims\(\)/);
+  assert.match(layout, /redirect\("\/login\?reason=unauthorized"\)/);
+});
+
+test("la migración activa RLS y no concede borrado de pacientes", async () => {
+  const migration = await read(
+    "supabase/migrations/20260816053346_phase_2_auth_rls.sql",
+  );
+  assert.ok((migration.match(/enable row level security/g) ?? []).length >= 11);
+  assert.match(migration, /patients_select_authorized/);
+  assert.match(migration, /appointments_select_authorized/);
+  assert.match(migration, /grant insert, update on public\.patients/);
+  assert.doesNotMatch(migration, /grant delete on public\.patients/);
 });
 
 test("la navegación contiene los nueve módulos acordados", async () => {

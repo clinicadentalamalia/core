@@ -1,6 +1,6 @@
 import type { DemoAppointment, DemoPatient, Role } from "@/types/demo";
 
-export const DEMO_NOTICE = "Entorno demostrativo · Todos los nombres y datos son ficticios";
+export const DEMO_NOTICE = "Entorno de desarrollo · No ingresar datos reales";
 
 export const demoPatients: DemoPatient[] = [
   { id: "pac-demo-001", initials: "VP", name: "Valentina Prado", identifier: "ID-DEMO-001", phone: "+56 9 1111 1111", email: "valentina@example.test", lastVisit: "04 ago 2026", nextAppointment: "Hoy, 10:30", status: "Activo", alert: "Alergia ficticia: látex" },

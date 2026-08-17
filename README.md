@@ -1,32 +1,46 @@
-# Clínica Amalia — primera entrega ficticia
+# Clínica Amalia — fase 2
 
-Aplicación privada en Next.js para diseño y pruebas de la futura operación odontológica y de armonización facial. Esta entrega utiliza **exclusivamente datos ficticios en memoria** y no persiste pacientes ni información clínica en Supabase.
+Aplicación privada en Next.js para la operación inicial de Clínica Amalia. La
+fase 2 incorpora Supabase Auth, perfiles y roles, pacientes administrativos,
+agenda y auditoría básica con Row Level Security.
 
-## Seguridad y alcance
+El proyecto conectado sigue siendo un **entorno de desarrollo**. No ingresar
+datos personales, antecedentes clínicos, fotografías ni documentos reales.
 
-- No ingresar datos personales, fotografías, documentos o antecedentes reales.
-- No usar `SUPABASE_SERVICE_ROLE_KEY` en el navegador.
-- No crear tablas clínicas antes de aprobar [`docs/MODELO_DATOS_Y_RLS_PROPUESTO.md`](docs/MODELO_DATOS_Y_RLS_PROPUESTO.md).
-- No promover previews a producción clínica.
-- El proyecto Supabase enlazado se considera desarrollo ficticio hasta que exista separación y autorización formal de producción.
+## Controles implementados
 
-## Tecnologías
-
-- Next.js 16 con App Router, React 19 y TypeScript estricto.
-- Tailwind CSS 4 y tokens visuales globales.
-- Supabase SSR preparado para navegador y servidor.
-- React Hook Form y Zod para validación.
-- Pruebas de contrato con Node.js y pruebas de componentes con Vitest, jsdom y Testing Library.
-- Inter y Cormorant Garamond alojadas como dependencias locales para builds reproducibles.
+- Sesión Supabase SSR renovada en `proxy.ts` y validada con `getClaims()` en el
+  servidor.
+- Usuarios nuevos en estado `pending`; los roles nunca se toman de
+  `user_metadata`.
+- RLS en las once tablas públicas y privilegios explícitos para
+  `authenticated`; `anon` no accede a datos operativos.
+- Recepción y administración pueden crear/actualizar pacientes y citas.
+- Profesionales solo leen pacientes y citas que tengan asignados.
+- Sin borrado de pacientes, citas, historial ni auditoría desde el cliente.
+- Exclusión de solapamientos de agenda por profesional y box.
+- Historial de estados y auditoría mínima sin duplicar contenido clínico.
+- Gate local y CI con lint, TypeScript, pruebas y build.
 
 ## Ejecución local
 
+Requiere Node 24 y pnpm 11.
+
 ```bash
 pnpm install
+Copy-Item .env.example .env.local
 pnpm dev
 ```
 
-Abrir `http://localhost:3000`. La ruta `/login` es visual; el enlace “Entrar a la demostración” lleva al dashboard sin autenticar ni guardar una sesión.
+Variables requeridas:
+
+```dotenv
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+```
+
+El código admite temporalmente `NEXT_PUBLIC_SUPABASE_ANON_KEY` como respaldo
+para ambientes que aún no han migrado al nuevo nombre.
 
 ## Verificación
 
@@ -34,29 +48,26 @@ Abrir `http://localhost:3000`. La ruta `/login` es visual; el enlace “Entrar a
 pnpm check
 ```
 
-`pnpm check` ejecuta lint, typecheck, todas las pruebas y el build. El mismo gate se
-ejecuta en GitHub Actions para cada pull request y cada push a `main`. `pnpm build`
-también exige `typecheck` antes de compilar; luego evita únicamente la comprobación
-interna duplicada de Next.js para funcionar en entornos con subprocesos restringidos.
+Las políticas se prueban con `supabase/tests/phase_2_rls.sql`. La prueba usa
+identidades y registros sintéticos, valida casos permitidos y denegados y
+limpia todo al finalizar.
 
-Para revisar dependencias conocidas como vulnerables:
+## Habilitación de usuarios
 
-```bash
-pnpm audit --audit-level high
-```
+No existe registro público. El primer administrador debe invitarse desde
+Supabase Dashboard y activarse siguiendo
+[`docs/FASE_2_OPERACION.md`](docs/FASE_2_OPERACION.md).
 
-## Variables
+Antes de cualquier despliegue de esta fase también se debe:
 
-Copiar `.env.example` a `.env.local` solo cuando se habilite Auth de desarrollo. Mantener valores distintos por ambiente y nunca confirmar `.env.local` en Git.
+1. Desactivar el signup público en la configuración remota de Supabase Auth.
+2. Confirmar las variables de Supabase en Vercel.
+3. Mantener Vercel Authentication.
+4. Completar MFA, recuperación de cuenta y separación desarrollo/producción
+   antes de autorizar datos reales.
 
-## Rutas incluidas
+## Alcance excluido
 
-- `/login`: acceso visual preparado.
-- `/dashboard`: indicadores, agenda diaria, calendario y acciones rápidas ficticias.
-- `/pacientes`: búsqueda y formulario validado sin persistencia.
-- `/agenda`: vista diaria y estados visuales.
-- `/tratamientos`, `/recordatorios`, `/finanzas`, `/inventario`, `/reportes`, `/ajustes`: estados iniciales navegables.
-
-## Siguiente incremento seguro
-
-Aprobar el modelo de datos y la matriz RLS. Después se puede crear una primera migración revisable para perfiles, roles, pacientes administrativos, agenda y auditoría básica, seguida de pruebas negativas por rol.
+Historial clínico, odontograma, armonización clínica, consentimientos,
+fotografías, finanzas e inventario no están implementados. Requieren decisiones
+de retención, seguridad y operación independientes.

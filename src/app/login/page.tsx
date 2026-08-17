@@ -1,11 +1,62 @@
-"use client";
+import { LoginForm } from "@/app/login/login-form";
 
-import { Eye, LockKeyhole, ShieldCheck } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+const notices: Record<string, string> = {
+  inactive: "Tu cuenta no está activa. Solicita acceso a administración.",
+  unauthorized: "Necesitas iniciar sesión para acceder.",
+  "invite-invalid":
+    "La invitación no es válida o expiró. Solicita una nueva invitación.",
+  "invite-required": "Abre el enlace de invitación recibido por correo.",
+};
 
-export default function LoginPage() {
-  const [show, setShow] = useState(false);
-  const router = useRouter();
-  return <main className="login-page"><section className="login-art"><div className="brand"><div className="brand-mark">A</div><div><div className="brand-name">Clínica Amalia</div><div className="brand-subtitle">Acceso privado</div></div></div><div className="login-copy"><p style={{fontWeight:750,letterSpacing:".14em",textTransform:"uppercase",fontSize:".72rem",opacity:.72}}>Cuidado que se siente</p><h1>Gestión clínica clara y humana.</h1><p style={{maxWidth:480,lineHeight:1.7,opacity:.78}}>Un espacio privado preparado para acompañar la operación odontológica y de armonización facial.</p></div><div style={{position:"relative",zIndex:1,fontSize:".75rem",opacity:.66}}>Entorno demostrativo · Sin pacientes reales</div></section><section className="login-form-wrap"><div className="card login-form"><p className="eyebrow">Bienvenida</p><h2>Iniciar sesión</h2><p className="muted" style={{fontSize:".85rem"}}>Acceso visual preparado para Supabase Auth.</p><form onSubmit={(event) => { event.preventDefault(); router.push("/dashboard"); }}><div className="field"><label htmlFor="email">Correo institucional</label><input className="input" id="email" type="email" placeholder="usuario@example.test" autoComplete="email"/></div><div className="field"><label htmlFor="password">Contraseña</label><div style={{position:"relative"}}><input className="input" style={{paddingRight:45}} id="password" type={show ? "text" : "password"} placeholder="••••••••" autoComplete="current-password"/><button type="button" onClick={() => setShow((current) => !current)} className="icon-button" aria-label={show ? "Ocultar contraseña" : "Mostrar contraseña"} aria-pressed={show} style={{position:"absolute",right:3,top:1,border:0,background:"transparent"}}><Eye size={18}/></button></div></div><button type="submit" className="button-primary"><LockKeyhole size={17}/>Entrar a la demostración</button></form><div className="login-note"><ShieldCheck size={15} style={{display:"inline",marginRight:6}}/>No se autentica ni se almacena información. Auth real se habilitará después de aprobar perfiles, roles y RLS.</div></div></section></main>;
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ reason?: string }>;
+}) {
+  const { reason } = await searchParams;
+
+  return (
+    <main className="login-page">
+      <section className="login-art">
+        <div className="brand">
+          <div className="brand-mark">A</div>
+          <div>
+            <div className="brand-name">Clínica Amalia</div>
+            <div className="brand-subtitle">Acceso privado</div>
+          </div>
+        </div>
+        <div className="login-copy">
+          <p
+            style={{
+              fontWeight: 750,
+              letterSpacing: ".14em",
+              textTransform: "uppercase",
+              fontSize: ".72rem",
+              opacity: 0.72,
+            }}
+          >
+            Cuidado que se siente
+          </p>
+          <h1>Gestión clínica clara y humana.</h1>
+          <p style={{ maxWidth: 480, lineHeight: 1.7, opacity: 0.78 }}>
+            Un espacio privado para acompañar la operación odontológica y de
+            armonización facial.
+          </p>
+        </div>
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            fontSize: ".75rem",
+            opacity: 0.66,
+          }}
+        >
+          Entorno de desarrollo · No ingresar datos reales
+        </div>
+      </section>
+      <section className="login-form-wrap">
+        <LoginForm notice={reason ? notices[reason] : undefined} />
+      </section>
+    </main>
+  );
 }

@@ -1,6 +1,8 @@
-# Modelo de datos y RLS propuesto — pendiente de aprobación
+# Modelo de datos y RLS — fase 2 aplicada en desarrollo
 
-Estado: **borrador de diseño, no aplicado a Supabase**. Este documento no autoriza datos reales ni producción.
+Estado: **migrado al proyecto Supabase de desarrollo el 16 de agosto de 2026**.
+Este documento no autoriza datos reales ni producción. El detalle ejecutable
+está en `supabase/migrations/20260816053346_phase_2_auth_rls.sql`.
 
 ## Límites de la primera aprobación
 
@@ -58,11 +60,11 @@ Las políticas deben usar roles almacenados en tablas internas o `app_metadata`;
 
 La retención clínica, financiera, de auditoría, documentos y fotografías requiere decisión legal/operativa previa. Hasta su aprobación no se implementará eliminación automática. Ningún historial clínico, pago, movimiento de inventario o auditoría se eliminará físicamente mediante la aplicación.
 
-## Decisiones requeridas antes de migrar
+## Decisiones requeridas antes de producción clínica
 
-1. Matriz definitiva por acción y ámbito profesional/paciente.
-2. Identificador administrativo obligatorio y política de posibles duplicados.
-3. Duración de sesiones y MFA para administración.
-4. Política de retención y corrección.
-5. Reglas exactas de horarios, boxes y excepciones de agenda.
+1. Validación formal de la matriz por acción y ámbito profesional/paciente.
+2. Política legal del identificador administrativo y resolución de duplicados.
+3. MFA obligatorio, recuperación de cuenta y duración definitiva de sesiones.
+4. Política de retención, corrección, respaldo y restauración.
+5. Reglas definitivas de horarios, boxes y excepciones de agenda.
 6. Separación definitiva entre Supabase desarrollo y producción.
