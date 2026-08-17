@@ -53,3 +53,23 @@ test("los permisos simulados separan finanzas y ajustes", async () => {
   assert.doesNotMatch(reception, /Ajustes/);
   assert.doesNotMatch(dentist, /Finanzas/);
 });
+
+test("la fase 3 protege la administración de personal y expone salud mínima", async () => {
+  const migration = await read(
+    "supabase/migrations/20260817034643_phase_3_staff_operations.sql",
+  );
+  const privileges = await read(
+    "supabase/migrations/20260817034750_phase_3_staff_privileges.sql",
+  );
+  const healthRoute = await read("src/app/api/health/route.ts");
+
+  assert.match(migration, /alter table public\.staff_accounts enable row level security/);
+  assert.match(migration, /security invoker/);
+  assert.match(migration, /p_user_id = \(select auth\.uid\(\)\)/);
+  assert.match(migration, /grant execute on function public\.app_healthcheck\(\) to anon, authenticated/);
+  assert.match(migration, /manage_staff_access\([\s\S]*?security invoker/i);
+  assert.match(privileges, /revoke all on table public\.staff_accounts/);
+  assert.match(privileges, /grant select on table public\.staff_accounts to authenticated/);
+  assert.match(healthRoute, /Cache-Control/);
+  assert.doesNotMatch(healthRoute, /error\.message/);
+});

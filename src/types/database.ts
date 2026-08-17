@@ -364,6 +364,35 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_accounts: {
+        Row: {
+          created_at: string
+          email: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "staff_accounts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       specialties: {
         Row: {
           area: string
@@ -439,7 +468,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      app_healthcheck: {
+        Args: never
+        Returns: string
+      }
+      manage_staff_access: {
+        Args: {
+          p_display_name: string
+          p_role_codes: string[]
+          p_status: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

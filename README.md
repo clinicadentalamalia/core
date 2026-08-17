@@ -1,8 +1,9 @@
-# Clínica Amalia — fase 2
+# Clínica Amalia — fase 3
 
 Aplicación privada en Next.js para la operación inicial de Clínica Amalia. La
-fase 2 incorpora Supabase Auth, perfiles y roles, pacientes administrativos,
-agenda y auditoría básica con Row Level Security.
+fase 3 incorpora Supabase Auth, perfiles y roles, pacientes administrativos,
+agenda, administración protegida de personal y observabilidad básica con Row
+Level Security.
 
 El proyecto conectado sigue siendo un **entorno de desarrollo**. No ingresar
 datos personales, antecedentes clínicos, fotografías ni documentos reales.
@@ -20,6 +21,10 @@ datos personales, antecedentes clínicos, fotografías ni documentos reales.
 - Sin borrado de pacientes, citas, historial ni auditoría desde el cliente.
 - Exclusión de solapamientos de agenda por profesional y box.
 - Historial de estados y auditoría mínima sin duplicar contenido clínico.
+- Directorio administrativo de personal con activación, suspensión y roles.
+- Protección contra suspensión o cambio de roles de la cuenta administradora
+  actual.
+- Control `GET /api/health` y logs operativos sin información personal.
 - Gate local y CI con lint, TypeScript, pruebas y build.
 
 ## Ejecución local
@@ -48,23 +53,27 @@ para ambientes que aún no han migrado al nuevo nombre.
 pnpm check
 ```
 
-Las políticas se prueban con `supabase/tests/phase_2_rls.sql`. La prueba usa
-identidades y registros sintéticos, valida casos permitidos y denegados y
-limpia todo al finalizar.
+Las políticas se prueban con `supabase/tests/phase_2_rls.sql` y
+`supabase/tests/phase_3_staff_operations.sql`. Las pruebas usan identidades y
+registros sintéticos, validan casos permitidos y denegados y limpian todo al
+finalizar.
 
 ## Habilitación de usuarios
 
 No existe registro público. El primer administrador debe invitarse desde
 Supabase Dashboard y activarse siguiendo
 [`docs/FASE_2_OPERACION.md`](docs/FASE_2_OPERACION.md).
+Después, el administrador puede mantener su estado y sus roles en `/ajustes`
+siguiendo [`docs/FASE_3_OPERACION.md`](docs/FASE_3_OPERACION.md).
 
 Antes de cualquier despliegue de esta fase también se debe:
 
 1. Desactivar el signup público en la configuración remota de Supabase Auth.
 2. Confirmar las variables de Supabase en Vercel.
 3. Mantener Vercel Authentication.
-4. Completar MFA, recuperación de cuenta y separación desarrollo/producción
-   antes de autorizar datos reales.
+4. Mantener el proyecto clasificado como demostración. MFA quedó fuera del
+   alcance actual; recuperación de cuenta, respaldo probado y separación de
+   ambientes deben reevaluarse antes de autorizar datos reales.
 
 ## Alcance excluido
 
